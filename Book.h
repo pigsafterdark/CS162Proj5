@@ -1,13 +1,13 @@
-Class Book
+class Book
 {
-Private:
-    Char title_[MAX_CHAR];
+private:
+    char title_[MAX_CHAR];
     char author_[MAX_CHAR];
-    Int quantity_;
-Public:
-    Static int numBooks;
-    Char getTitle();
-    Char getAuthor();
-    Int quantity();
-    Void setQuantity(quantity);
+    int quantity_;
+public:
+    static int numBooks;
+    char getTitle();
+    char getAuthor();
+    int getQuantity();
+    void setQuantity(quantity);
 }
