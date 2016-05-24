@@ -1,9 +1,9 @@
-Class DB
+class DB
 {
-Private:
-    Char book_[MAX_CHAR];
+private:
+    char book_[MAX_CHAR];
     char user_[User::numUsers][MAX_CHAR];;
-Public:
+public:
     DB();
     DB(book, user);
     ~DB();
