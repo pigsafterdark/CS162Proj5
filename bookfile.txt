@@ -1,0 +1,10 @@
+The Lord of the Rings;J.R.R. Tolkien;8
+Don Quixote;Miguel de Cervantes;5
+Huckleberry Finn;Mark Twain;12
+What It Takes;Richard Ben Cramer;2
+The Grapes of Wrath;John Steinbeck;7
+The Shining;Stephen King;4
+Moby-Dick;Herman Melville;8
+C++ Programming: From Problem Analysis to Program Design;D.S. Malik;5
+Fight Club;Chuck Palahniuk;3
+Flash Boys;Michael Lewis;14
