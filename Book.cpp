@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Book.h"
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -37,7 +38,7 @@ void Book::setQuantity(int quantity)
 void Book::PrintToConsole()
 {
 	cout << endl << "Title: " << title_ << endl;
-	cout << "Author: "author_ << endl <<; 
+	cout << "Author: " << author_ << endl; 
 	//cout << quantity_ << endl; should we print out how many there are?
 }
 
