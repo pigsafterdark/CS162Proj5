@@ -1,0 +1,58 @@
+void readFile()
+{
+	ifstream in;
+	int tempCounter = 0;
+	char tempName[MAX_CHAR];
+	char tempColor[MAX_CHAR];
+	double tempMass;
+	double tempLength;
+
+	//If any nodes exist in the linked list,
+	//call clearList function
+	if (list.GetListLength() != 0)
+	{
+		clearList();
+	}
+
+	cout << "Enter file name: ";
+	cin.get(Shell::filePath_, MAX_CHAR, '\n');
+	cin.ignore(MAX_CHAR, '\n');
+
+	//Count the number of lines in the input file
+	in.open(Shell::filePath_);
+	while (!in.eof())
+	{
+		in.ignore(10000, '\n');
+		in.peek();
+		tempCounter++;
+	}
+	in.close();
+	in.clear(std::ios_base::goodbit);
+
+	in.open(Shell::filePath_);
+
+	//Store data from file into temporary variables,
+	//pass that data into a new Shell object,
+	//add that Shell object to the linked list
+	for (int i = 0; i < tempCounter; i++)
+	{
+		in.get(tempName, MAX_CHAR, ',');
+		in.ignore(MAX_CHAR, ' ');
+		in.get(tempColor, MAX_CHAR, ',');
+		in.ignore(MAX_CHAR, ' ');
+		in >> tempMass;
+		in.ignore(MAX_CHAR, ',');
+		in >> tempLength;
+		in.ignore(MAX_CHAR, '\n');
+
+		Shell * aShell = new Shell(tempName);
+		aShell->SetColor(tempColor);
+		aShell->SetMass(tempMass);
+		aShell->SetLength(tempLength);
+
+		list.AddLinkToBack(aShell);
+
+	}
+	in.close();
+	in.clear(std::ios_base::goodbit);
+}
