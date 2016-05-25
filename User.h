@@ -22,6 +22,7 @@ class User
     char* getName();
     int getNumChecked();
     void setNumChecked(int aNumber);
+    void PrintToConsole();
 };
 
 #endif
