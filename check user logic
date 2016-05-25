@@ -1,0 +1,23 @@
+//temp Song data
+	char tempPath[MAX_CHAR];
+
+	//Get Song info from user
+	cout << "Enter file path: ";
+	cin.get(tempPath, MAX_CHAR, '\n');
+	cin.ignore(MAX_CHAR, '\n');
+
+	
+	//store song name after last instance of '\'
+	char * tempName = strrchr(tempPath, '\\') + 1;
+	cout << "new song info" << endl;
+	cout << tempName << endl;
+	cout << tempPath << endl;
+
+
+	//Store Song object in aSong and pass it
+	//into the linked list
+	Song * aSong = new Song(tempName);
+	aSong->SetSongPath(tempPath);
+
+	aSong->AppendToListFile();
+	list.AddLinkToBack(aSong);
