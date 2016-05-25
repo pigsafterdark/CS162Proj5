@@ -1,23 +1,31 @@
-//temp Song data
-	char tempPath[MAX_CHAR];
+char listName[MAX_CHAR];
+	char userName[MAX_CHAR];
+	long counter = list.GetListLength();
 
-	//Get Song info from user
-	cout << "Enter file path: ";
-	cin.get(tempPath, MAX_CHAR, '\n');
+	printList();
+	cout << "Select song to play(case sensitive): ";
+	cin.get(userName, MAX_CHAR, '\n');
 	cin.ignore(MAX_CHAR, '\n');
 
-	
-	//store song name after last instance of '\'
-	char * tempName = strrchr(tempPath, '\\') + 1;
-	cout << "new song info" << endl;
-	cout << tempName << endl;
-	cout << tempPath << endl;
-
-
-	//Store Song object in aSong and pass it
-	//into the linked list
-	Song * aSong = new Song(tempName);
-	aSong->SetSongPath(tempPath);
-
-	aSong->AppendToListFile();
-	list.AddLinkToBack(aSong);
+	if (counter != 0)
+	{
+		Song * aSong = (Song*)(list.GetFirstNode());
+		strcpy(listName, aSong->GetSongName());
+		if (strcmp(userName, listName) == 0)
+		{
+			cout << "Now playing: " << listName << endl;
+			return;
+		}
+		for (int i = 0; i < (counter - 1); i++)
+		{
+			aSong = (Song*)(list.GetNextNode());
+			strcpy(listName, aSong->GetSongName());
+			if (strcmp(userName, listName) == 0)
+			{
+				cout << "Now playing: " << listName << endl;
+			}
+		}
+	}
+	else
+		cout << "No list loaded" << endl;
+}
