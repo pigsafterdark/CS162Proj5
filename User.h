@@ -1,15 +1,26 @@
-Class User
+#ifndef USER_H
+#define USER_H
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <cstring>
+const int MAX_CHAR = 30;
+
+class User
 {
-  Private:
+  private:
     char fName_[MAX_CHAR];
     char lName_[MAX_CHAR];
     int numChecked_;
- Public: 
+ public: 
+	User();
+	~User();
     static int numUsers;
-    char getFName();
+    char* getFName();
     void setFName(char* aName);
-    char getLName();
+    char* getLName();
     void setLName(char* aName);
-    int getnumChecked();
-    void setnumChecked(numChecked);
-}
+    int getNumChecked();
+    void setNumChecked(int aNumber);
+};
+
+#endif
