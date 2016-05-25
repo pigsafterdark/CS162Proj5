@@ -1,0 +1,18 @@
+void printList()
+{
+	long counter = llUser.GetListLength();
+	
+	if (counter != 0)
+	{
+		User * aUser = (User*)(list.GetFirstNode());
+		aUser->PrintToConsole();
+		for (int i = 0; i < (counter - 1); i++)
+		{
+			aUser = (User*)(list.GetNextNode());
+			aUser->PrintToConsole();
+		}
+	}
+	else
+		cout << "No list loaded" << endl;
+	
+}
