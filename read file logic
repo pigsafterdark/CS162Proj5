@@ -1,11 +1,10 @@
-void readFile()
+void readUserFile()
 {
 	ifstream in;
 	int tempCounter = 0;
-	char tempName[MAX_CHAR];
-	char tempColor[MAX_CHAR];
-	double tempMass;
-	double tempLength;
+	char tempFName[MAX_CHAR];
+	char tempLName[MAX_CHAR];
+	int tempNumChecked;
 
 	//If any nodes exist in the linked list,
 	//call clearList function
@@ -14,12 +13,10 @@ void readFile()
 		clearList();
 	}
 
-	cout << "Enter file name: ";
-	cin.get(Shell::filePath_, MAX_CHAR, '\n');
-	cin.ignore(MAX_CHAR, '\n');
+	
 
 	//Count the number of lines in the input file
-	in.open(Shell::filePath_);
+	in.open("users.txt")
 	while (!in.eof())
 	{
 		in.ignore(10000, '\n');
@@ -29,28 +26,27 @@ void readFile()
 	in.close();
 	in.clear(std::ios_base::goodbit);
 
-	in.open(Shell::filePath_);
+	in.open("users.txt");
 
 	//Store data from file into temporary variables,
 	//pass that data into a new Shell object,
 	//add that Shell object to the linked list
 	for (int i = 0; i < tempCounter; i++)
 	{
-		in.get(tempName, MAX_CHAR, ',');
-		in.ignore(MAX_CHAR, ' ');
-		in.get(tempColor, MAX_CHAR, ',');
-		in.ignore(MAX_CHAR, ' ');
-		in >> tempMass;
-		in.ignore(MAX_CHAR, ',');
-		in >> tempLength;
+		in.get(tempFName, MAX_CHAR, ';');
+		in.ignore(MAX_CHAR, ';');
+		in.get(tempLName, MAX_CHAR, ';');
+		in.ignore(MAX_CHAR, ';');
+		in >> tempNumChecked;
+		in.ignore(MAX_CHAR, ';');
 		in.ignore(MAX_CHAR, '\n');
 
-		Shell * aShell = new Shell(tempName);
-		aShell->SetColor(tempColor);
-		aShell->SetMass(tempMass);
-		aShell->SetLength(tempLength);
+		User * aUser = new User;
+		aUser->setFName(tempFName);
+		aUser->setLName(tempLName);
+		aShell->setNumChecked(tempNumChecked);
 
-		list.AddLinkToBack(aShell);
+		llUser.AddLinkToBack(aUser);
 
 	}
 	in.close();
