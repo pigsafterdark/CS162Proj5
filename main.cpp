@@ -2,8 +2,8 @@
 #include <string.h>
 #include "Book.h"
 #include "User.h"
-#inlcude "DB.h"
-
+//#include "DB.h"
+#include "LinkedList.h"
 using namespace std;
 
 char Menu();
@@ -14,6 +14,8 @@ void Login();
 void Register();
 
 void ListBooks();
+
+LinkedList llUser, llBook, llDB;
 
 int main()
 {
@@ -86,7 +88,7 @@ void Menu2A()
 char Menu2B()
 {
   cout << endl << "a)List all Books" << endl;
-  cout << "b)" << endl;
+  cout << "b)Books I've checked out" << endl;
   cout << "c)" << endl;
   cout << "" << endl;
   cout << "" << endl;
@@ -99,21 +101,56 @@ char Menu2B()
 void Login()
 {
   cout << "Enter your name to login: ";
-  char input[256];
+  char input[256], listName[256];
   cin.ignore();
   cin.get(input, 256, '\n');
   cin.ignore(256, '\n');
   cout << endl;
-
-  
+  //see if user exists
+  long counter = llUser.GetListLength();
+  if (counter != 0)
+    {
+      User * aUser = (User*)(llUser.GetFirstNode());
+      strcpy(listName, aUser->getName());
+      if (strcmp(input, listName) == 0)
+	{
+	  cout << "User exists" << listName << endl;
+	  return;
+	}
+      for (int i = 0; i < (counter - 1); i++)
+	{
+	  aUser = (User*)(llUser.GetNextNode());
+	  strcpy(listName, aUser->getName());
+	  if (strcmp(input, listName) == 0)
+	    {
+	      cout << "User Exists" << listName << endl;
+	    }
+	}
+    }
+  else
+    cout << "No list loaded" << endl;
 }
 
 void Register()
 {
+  cin.ignore();
   cout << "Enter your first name: ";
   char finput[256];
   cin >> finput;
+  cin.ignore();
   cout << "Enter your last name: ";
   char linput[256];
-  cin << linput[256];
+  cin >> linput;
+  
+  //see if user exists
+
+  User* userObj;
+  userObj->setFName(finput);
+  userObj->setLName(linput);
+
+  llUser.AddLinkToBack(userObj);
+
+  cout << "Congrats, your username is now " << finput << " " << linput << "!" << endl;
+
+  Menu2A();
 }
