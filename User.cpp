@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "User.h"
   
@@ -27,10 +28,10 @@ void User::setFName(char * aName)
  
  char* User::getLName()
  {
-     return lName;
+     return lName_;
  }
  
- void User::SetLName(char* aName)
+ void User::setLName(char* aName)
  {
      strcpy(lName_, aName);
  }
@@ -40,7 +41,7 @@ int User::getNumChecked()
       return numChecked_;
 }
  
-  void User::setNumChecked(aNumber)
+void User::setNumChecked(int aNumber)
 {
       numChecked_ = aNumber;
 }
