@@ -53,3 +53,8 @@ void User::setNumChecked(int aNumber)
 {
       numChecked_ = aNumber;
 }
+void User::PrintToConsole()
+{
+	cout << fName_ << " " << lName_ << " " 
+		<< numChecked_ endl;
+}
