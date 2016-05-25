@@ -1,4 +1,4 @@
-void printList()
+void printUserList()
 {
 	long counter = llUser.GetListLength();
 	
