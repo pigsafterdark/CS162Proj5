@@ -20,12 +20,12 @@ int Book::getQuantity()
   return quantity_;
 }
 
-void Book::SetTitle(char* title)
+void Book::setTitle(char* title)
 {
   strcpy(title_, title);
 }
 
-void Book::SetAuthor(char* author)
+void Book::setAuthor(char* author)
 {
   strcpy(title_, author);
 }
