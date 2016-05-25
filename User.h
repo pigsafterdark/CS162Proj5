@@ -1,26 +1,48 @@
-#ifndef USER_H
-#define USER_H
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <cstring>
-const int MAX_CHAR = 30;
-
-class User
+#include "User.h"
+  
+int numUsers = 0;
+  
+User::User()
 {
-  private:
-    char fName_[MAX_CHAR];
-    char lName_[MAX_CHAR];
-    int numChecked_;
- public: 
-	User();
-	~User();
-    static int numUsers;
-    char* getFName();
-    void setFName(char* aName);
-    char* getLName();
-    void setLName(char* aName);
-    int getNumChecked();
-    void setNumChecked(int aNumber);
-};
+    numChecked_ = 0;
+}
+ 
 
-#endif
+User::~User()
+{
+  
+}
+
+
+char* User::getFName()
+{
+     return fName_;
+}
+
+void User::setFName(char * aName)
+ {
+     strcpy(fName_, aName);
+ }
+ 
+ char* User::getLName()
+ {
+     return lName_;
+ }
+ 
+ void User::setLName(char* aName)
+ {
+     strcpy(lName_, aName);
+ }
+  
+int User::getNumChecked()
+{
+      return numChecked_;
+}
+ 
+void User::setNumChecked(int aNumber)
+{
+      numChecked_ = aNumber;
+}
+
