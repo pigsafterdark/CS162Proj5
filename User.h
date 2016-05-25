@@ -23,6 +23,7 @@ class User
     int getNumChecked();
     void setNumChecked(int aNumber);
     void PrintToConsole();
+    void AppendToFile();
 };
 
 #endif
