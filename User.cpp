@@ -35,6 +35,14 @@ void User::setFName(char * aName)
  {
      strcpy(lName_, aName);
  }
+ 
+ char* User::getName()
+ {
+   char tempfName[100], templName[100];
+   strcpy(tempfName, fName_);
+   strcpy(templName, lName_);
+   return strcat(tempfName,strcat(" ", templName));
+ }
   
 int User::getNumChecked()
 {
