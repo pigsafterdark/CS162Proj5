@@ -1,3 +1,9 @@
+#ifndef BOOK_H
+#define BOOK_H
+#define _CRT_SECURE_NO_WARNINGS
+
+#include "User.h"
+
 class Book
 {
 private:
@@ -6,8 +12,10 @@ private:
     int quantity_;
 public:
     static int numBooks;
-    char getTitle();
-    char getAuthor();
+    char* getTitle();
+    char* getAuthor();
     int getQuantity();
-    void setQuantity(quantity);
-}
+    void setQuantity(int quantity);
+};
+
+#endif
