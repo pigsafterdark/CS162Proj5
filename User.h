@@ -19,6 +19,7 @@ class User
     void setFName(char* aName);
     char* getLName();
     void setLName(char* aName);
+    char* getName();
     int getNumChecked();
     void setNumChecked(int aNumber);
 };
