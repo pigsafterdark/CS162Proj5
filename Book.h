@@ -15,6 +15,8 @@ public:
     char* getTitle();
     char* getAuthor();
     int getQuantity();
+    void setTitle(char* title);
+    void setAuthor(char* author);
     void setQuantity(int quantity);
     void PrintToConsole();
     void AppendToFile();
