@@ -58,3 +58,13 @@ void User::PrintToConsole()
 	cout << fName_ << " " << lName_ << " " 
 		<< numChecked_ endl;
 }
+
+void User::AppendToFile()
+{
+	ofstream out;
+	out.open("users.txt", ios::app);
+	out << this->fName_ << ";"
+		<< this->lName << ";"
+		<< this->numChecked_ << '\n';
+	out.close();
+}
