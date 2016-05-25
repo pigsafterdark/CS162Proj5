@@ -16,6 +16,8 @@ public:
     char* getAuthor();
     int getQuantity();
     void setQuantity(int quantity);
+    void PrintToConsole();
+    void AppendToFile();
 };
 
 #endif
