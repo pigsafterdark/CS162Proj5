@@ -1,5 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
+#define _CRT_SECURE_NO_WARNINGS
 
 struct Node
 {
