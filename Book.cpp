@@ -34,14 +34,14 @@ void Book::setQuantity(int quantity)
   quantity_ = quantity;
 }
 
-void User::PrintToConsole()
+void Book::PrintToConsole()
 {
 	cout << endl << "Title: " << title_ << endl;
 	cout << "Author: "author_ << endl <<; 
 	//cout << quantity_ << endl; should we print out how many there are?
 }
 
-void User::AppendToFile()
+void Book::AppendToFile()
 {
 	ofstream out;
 	out.open("books.txt", ios::app);
