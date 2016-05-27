@@ -5,6 +5,16 @@
 
 using namespace std;
 
+Book::Book()
+{
+  userList_[15] = "Empty";
+  quantity_ = 0;
+}
+
+Book::~Book()
+{
+}
+
 char* Book::getTitle()
 {
   return title_;
@@ -37,17 +47,64 @@ void Book::setQuantity(int quantity)
 
 void Book::PrintToConsole()
 {
-	cout << endl << "Title: " << title_ << endl;
-	cout << "Author: " << author_ << endl; 
-	//cout << quantity_ << endl; should we print out how many there are?
+  cout << endl;
+  cout << "Title: " << title_ << endl;
+  cout << "Author: " << author_ << endl; 
+  //cout << quantity_ << endl; should we print out how many there are?
 }
 
 void Book::AppendToFile()
 {
-	ofstream out;
-	out.open("books.txt", ios::app);
-	out << this->title_ << ";"
-		<< this->author_ << ";"
-		<< this->quantity_ << '\n';
-	out.close();
+  ofstream out;
+  out.open("books.txt", ios::app);
+  out << this->title_ << ";"
+      << this->author_ << ";"
+      << this->quantity_ << '\n';
+  out.close();
 }
+
+void Book::checkOut(char* user)
+{
+  string tempUser(user);
+  int x = 0;
+  for(int i = 0; i < quantity_; i++)
+    {
+      if(userList_[i] == "Empty")
+	{
+	  userList_[i] = tempUser;
+	  x = 1;
+	}
+      if(x == 1)
+	{
+	  break;
+	}
+    }
+}
+
+void Book::checkIn(char* user)
+{
+  string tempUser(user);
+  for(int i = 0; i < quantity_; i++)
+    {
+      if(userList_[i] == tempUser)
+        {
+	  userList_[i] = "Empty";
+        }
+    }
+}
+
+char* Book::userBooks(char* user)
+{
+  string tempUser(user);
+  for(int i = 0; i < 15; i++)
+    {
+      if(userList_[i] == tempUser)
+        {
+	  return title_;
+        }
+    }
+  return 0;
+}
+
+
+

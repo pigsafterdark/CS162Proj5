@@ -1,10 +1,8 @@
-
 #include <iostream>
 #include <fstream>
 #include <string.h>
 #include "Book.h"
 #include "User.h"
-//#include "DB.h"
 #include "LinkedList.h"
 using namespace std;
 
@@ -19,9 +17,15 @@ void Login();
 void Register();
 
 void PrintBookList();
+void UserBooks();
+void CheckOut();
+void CheckIn();
+
 void PrintUserList();
 
-LinkedList llUser, llBook, llDB;
+LinkedList llUser, llBook;
+
+char fullname[MAX_CHAR];
 
 int main()
 {
@@ -79,11 +83,13 @@ void Menu2A()
 	  PrintBookList();
           break;
         case 'b':
+	  UserBooks();
           break;
         case 'c':
-
+	  CheckOut();
           break;
         case 'd':
+	  CheckIn();
           break;
         case 'e':
           terminate = true;
@@ -195,9 +201,9 @@ void Login()
 {
   //gets user input
   cout << "Enter your name to login: ";
-  char input[MAX_CHAR], listName[MAX_CHAR];
+  char listName[MAX_CHAR];
   cin.ignore();
-  cin.get(input, MAX_CHAR, '\n');
+  cin.get(fullname, MAX_CHAR, '\n');
   cin.ignore(MAX_CHAR, '\n');
   cout << endl;
 
@@ -207,7 +213,7 @@ void Login()
     {
       User * aUser = (User*)(llUser.GetFirstNode());
       strcpy(listName, aUser->getName());
-      if (strcmp(input, listName) == 0)
+      if (strcmp(fullname, listName) == 0)
 	{
 	  cout << "Login Successful" << endl;
 	  Menu2A();
@@ -216,7 +222,7 @@ void Login()
 	{
 	  aUser = (User*)(llUser.GetNextNode());
 	  strcpy(listName, aUser->getName());
-	  if (strcmp(input, listName) == 0)
+	  if (strcmp(fullname, listName) == 0)
 	    {
 	      cout << "Login Successful" << endl;
 	      Menu2A();
@@ -305,6 +311,63 @@ void PrintBookList()
     cout << "No list loaded" << endl;
 }
 
+void UserBooks()
+{
+  long counter = llBook.GetListLength();
+ 
+  char bookName[MAX_CHAR];
+
+  if (counter != 0)
+    {
+      Book * aBook = (Book*)(llBook.GetFirstNode());
+      strcpy(bookName, aBook->userBooks(fullname));
+      if(bookName != 0)
+	{
+	  cout << bookName;
+        }
+      for (int i = 0; i < (counter - 1); i++)
+	 {
+	   aBook = (Book*)(llBook.GetNextNode());
+	   strcpy(bookName, aBook->userBooks(fullname));
+	   if (bookName != 0)
+	     {
+	       cout << bookName;
+	     }
+	 }
+    }
+}
+
+void CheckOut()
+{
+  char binput[MAX_CHAR];
+  cin.ignore();
+  cout << "Enter the book you want to check out: ";
+  cin.get(binput, MAX_CHAR, '\n');
+  cin.ignore(MAX_CHAR, '\n');
+  cout << endl;
+
+  long counter = llBook.GetListLength();
+  Book * aBook = (Book*)(llBook.GetFirstNode());
+  if (strcmp(aBook->getTitle(), binput) == 0)
+    {
+      aBook->checkOut(binput);
+      return;
+    }
+  for (int i = 0; i < (counter - 1); i++)
+    {
+      aBook = (Book*)(llBook.GetNextNode());
+      if (strcmp(aBook->getTitle(), binput) == 0)
+	{
+	  aBook->checkOut(binput);
+	  return;
+	}
+    }
+
+}
+
+void CheckIn()
+{
+}
 
 
 void PrintUserList()

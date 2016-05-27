@@ -4,20 +4,29 @@
 
 #include "User.h"
 
+using namespace std;
+
 class Book
 {
-private:
+  private: 
     char title_[MAX_CHAR];
     char author_[MAX_CHAR];
-    int quantity_;
-public:
+    int quantity_; 
+    string userList_[15];
+  public:
     static int numBooks;
+    Book();
+    ~Book();
     char* getTitle();
     char* getAuthor();
     int getQuantity();
     void setTitle(char* title);
-    void setAuthor(char* author);
+    void setAuthor(char* title);
     void setQuantity(int quantity);
+    void checkOut(char* user);
+    void checkIn(char* user);
+    char* userBooks(char* user);
+
     void PrintToConsole();
     void AppendToFile();
 };
