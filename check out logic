@@ -1,0 +1,15 @@
+   Book * aBook = (Book*)(llBook.GetFirstNode());
+      if (strcmp(aBook->getTitle, binput) == 0)
+	  {
+		aBook->checkOut(binput);
+		return;
+	  }
+      for (int i = 0; i < (counter - 1); i++)
+        {
+          aBook = (Book*)(llBook.GetNextNode());
+          if (strcmp(aBook->getTitle, binput) == 0)
+			{
+				aBook->checkOut(binput);
+				return;
+			}
+        }
