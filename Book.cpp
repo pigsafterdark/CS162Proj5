@@ -27,7 +27,7 @@ void Book::setTitle(char* title)
 
 void Book::setAuthor(char* author)
 {
-  strcpy(title_, author);
+  strcpy(author_, author);
 }
 
 void Book::setQuantity(int quantity)
