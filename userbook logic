@@ -1,0 +1,19 @@
+if (counter != 0)
+    {
+      Book * aBook = (Book*)(llBook.GetFirstNode());
+      book_Name = aBook->userBooks(//user name goes here);
+	  if(book_name != 0)
+	  {
+		cout << book_name;
+	  }
+      for (int i = 0; i < (counter - 1); i++)
+        {
+          aBook = (Book*)(llBook.GetNextNode());
+          book_name = aBook->userBooks(//user name goes here);
+		  if (book_Name != 0)
+		  {
+			cout << book_Name;
+		  }
+        }
+    }
+ 
