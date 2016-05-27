@@ -1,5 +1,0 @@
-void User::PrintToConsole()
-{
-	cout << fName_ << " " << lName_ << " " 
-		<< numChecked_ endl;
-}
