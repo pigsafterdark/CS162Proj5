@@ -1,0 +1,3 @@
+# CS162Proj5
+5/27
+We can now check in and check out books. Append to book file for check in/out isn't done yet, so it won't save after we exit the program. I can get this working tomorrow. I'm going to be at the Sylvania lab when it opens.
