@@ -1,14 +1,19 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include "Book.h"
-#define _CRT_SECURE_NO_WARNINGS
+
 
 using namespace std;
 
 Book::Book()
 {
-  userList_[15] = "Empty";
-  quantity_ = 0;
+	for (int i = 0; i < 15; i++)
+	{
+		userList_[i] = "Empty";
+	}
+
+	quantity_ = 0;
 }
 
 Book::~Book()
@@ -103,7 +108,7 @@ char* Book::userBooks(char* user)
 	  return title_;
         }
     }
-  return 0;
+  return "empty";
 }
 
 

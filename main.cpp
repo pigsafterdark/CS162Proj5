@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include <string.h>
@@ -281,7 +282,7 @@ void Register()
     }
 
   //stores name into obj and linked list
-  User* userObj;
+  User* userObj = new User;
   userObj->setFName(finput);
   userObj->setLName(linput);
   userObj->setNumChecked(0);
@@ -321,7 +322,7 @@ void UserBooks()
     {
       Book * aBook = (Book*)(llBook.GetFirstNode());
       strcpy(bookName, aBook->userBooks(fullname));
-      if(bookName != 0)
+	  if (strcmp(bookName, "empty") != 0)
 	{
 	  cout << bookName;
         }
@@ -329,7 +330,7 @@ void UserBooks()
 	 {
 	   aBook = (Book*)(llBook.GetNextNode());
 	   strcpy(bookName, aBook->userBooks(fullname));
-	   if (bookName != 0)
+	   if (strcmp(bookName, "empty") != 0)
 	     {
 	       cout << bookName;
 	     }
@@ -350,23 +351,46 @@ void CheckOut()
   Book * aBook = (Book*)(llBook.GetFirstNode());
   if (strcmp(aBook->getTitle(), binput) == 0)
     {
-      aBook->checkOut(binput);
+      aBook->checkOut(fullname);
       return;
     }
   for (int i = 0; i < (counter - 1); i++)
     {
       aBook = (Book*)(llBook.GetNextNode());
-      if (strcmp(aBook->getTitle(), binput) == 0)
+		if (strcmp(aBook->getTitle(), binput) == 0)
 	{
-	  aBook->checkOut(binput);
+	  aBook->checkOut(fullname);
 	  return;
 	}
-    }
+	 }
 
 }
 
 void CheckIn()
 {
+	char binput[MAX_CHAR];
+	cin.ignore();
+	cout << "Enter the book you want to check in: ";
+	cin.get(binput, MAX_CHAR, '\n');
+	cin.ignore(MAX_CHAR, '\n');
+	cout << endl;
+
+	long counter = llBook.GetListLength();
+	Book * aBook = (Book*)(llBook.GetFirstNode());
+	if (strcmp(aBook->getTitle(), binput) == 0)
+	{
+		aBook->checkIn(fullname);
+		return;
+	}
+	for (int i = 0; i < (counter - 1); i++)
+	{
+		aBook = (Book*)(llBook.GetNextNode());
+		if (strcmp(aBook->getTitle(), binput) == 0)
+		{
+			aBook->checkIn(fullname);
+			return;
+		}
+	}
 }
 
 
