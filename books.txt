@@ -1,10 +1,5 @@
-The Lord of the Rings;J.R.R. Tolkien;8
-Don Quixote;Miguel de Cervantes;5
-Huckleberry Finn;Mark Twain;12
-What It Takes;Richard Ben Cramer;2
-The Grapes of Wrath;John Steinbeck;7
-The Shining;Stephen King;4
-Moby-Dick;Herman Melville;8
-C++ Programming: From Problem Analysis to Program Design;D.S. Malik;5
-Fight Club;Chuck Palahniuk;3
-Flash Boys;Michael Lewis;14
+The Shining;Stephen King;4;Horror;Empty;Empty;Empty;Empty;
+the cpu;Stephen King;4;Science Fiction;Empty;Empty;Empty;Empty;
+The phone;Stephen King;3;Fiction;Empty;Empty;Empty;
+The book;Stephen King;4;Romance;Randy Savage;Empty;Empty;Empty;
+The other book;Stephen King;2;Non Fiction;Empty;Empty;

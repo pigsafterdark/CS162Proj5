@@ -1,9 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 
 using namespace std;
-
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "User.h"
   
@@ -43,11 +42,12 @@ void User::setLName(char* aName)
  
 char* User::getName()
 {
-  char space[5] = " ";
-  char tempfName[100], templName[100];
-  strcpy(tempfName, fName_);
-  strcpy(templName, lName_);
-  return strcat(tempfName,strcat(space, templName));
+  return Name_;
+}
+
+void User::setName(char* aName)
+{
+  strcpy(Name_, aName);
 }
   
 int User::getNumChecked()

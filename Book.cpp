@@ -1,14 +1,21 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include "Book.h"
-#define _CRT_SECURE_NO_WARNINGS
+
 
 using namespace std;
 
 Book::Book()
 {
-  userList_[15] = "Empty";
-  quantity_ = 0;
+	for (int i = 0; i < 15; i++)
+	{
+	  userList_[i] = "Empty";
+	}
+	char empty[25] = "Empty";
+	strcpy(empty_, empty);
+	quantity_ = 0;
+	y_ = 0;
 }
 
 Book::~Book()
@@ -50,6 +57,7 @@ void Book::PrintToConsole()
   cout << endl;
   cout << "Title: " << title_ << endl;
   cout << "Author: " << author_ << endl; 
+  cout << "Category: " << type_ << endl;
   //cout << quantity_ << endl; should we print out how many there are?
 }
 
@@ -59,7 +67,14 @@ void Book::AppendToFile()
   out.open("books.txt", ios::app);
   out << this->title_ << ";"
       << this->author_ << ";"
-      << this->quantity_ << '\n';
+      << this->quantity_ << ";"
+      << this->type_ << ";";
+  for(int i = 0; i < quantity_; i++)
+    {
+      out << this->userList_[i] << ";";  
+    }
+  out << '\n';
+  
   out.close();
 }
 
@@ -103,8 +118,24 @@ char* Book::userBooks(char* user)
 	  return title_;
         }
     }
-  return 0;
+  char empty[25] = "Empty";
+  strcpy(empty_, empty);
+
+  return empty_;
 }
 
+void Book::setUsers(string users)
+{
+  userList_[y_] = users;
+  y_++;
+}
 
+void Book::setType(char* type)
+{
+  strcpy(type_, type);
+}
 
+char* Book::getType()
+{
+  return type_;
+}

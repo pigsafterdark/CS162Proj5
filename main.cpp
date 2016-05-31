@@ -1,6 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <stdlib.h>
 #include "Book.h"
 #include "User.h"
 #include "LinkedList.h"
@@ -9,6 +11,8 @@ using namespace std;
 char Menu();
 void Menu2A();
 char Menu2B();
+void Menu3A();
+char Menu3B();
 
 void ReadUserFile();
 void ReadBookFile();
@@ -16,16 +20,21 @@ void ReadBookFile();
 void Login();
 void Register();
 
+void SearchTitle();
+void SearchAuthor();
+void SearchType();
 void PrintBookList();
 void UserBooks();
 void CheckOut();
 void CheckIn();
+void LogOut();
 
 void PrintUserList();
 
 LinkedList llUser, llBook;
 
 char fullname[MAX_CHAR];
+int numbooks, numusers;
 
 int main()
 {
@@ -39,8 +48,8 @@ int main()
   while (!terminate)
     {
       selection = Menu();
-
-      switch (selection)
+      
+      switch(selection)
         {
         case 'a':
 	  Login();
@@ -80,7 +89,7 @@ void Menu2A()
       switch (selection)
         {
         case 'a':
-	  PrintBookList();
+	  Menu3A();
           break;
         case 'b':
 	  UserBooks();
@@ -92,7 +101,7 @@ void Menu2A()
 	  CheckIn();
           break;
         case 'e':
-          terminate = true;
+	  LogOut();
           break;
         default:
           cout << "That is not a valid choice!\n";
@@ -102,11 +111,56 @@ void Menu2A()
 
 char Menu2B()
 {
-  cout << endl << "a)List all Books" << endl;
+  cout << endl << "a)Search for a book" << endl;
   cout << "b)Books I've checked out" << endl;
   cout << "c)Check out a book" << endl;
   cout << "d)Return a book" << endl;
   cout << "e)Logout" << endl;
+
+  char selection;
+  cin >> selection;
+  return selection;
+}
+void Menu3A()
+{
+  bool terminate = false;
+  char selection;
+
+  while (!terminate)
+    {
+      selection = Menu3B();
+
+      switch (selection)
+        {
+        case 'a':
+          PrintBookList();
+          break;
+        case 'b':
+	  SearchTitle();
+          break;
+        case 'c':
+	  SearchAuthor();
+          break;
+        case 'd':
+	  SearchType();
+          break;
+        case 'e':
+          Menu2A();
+          break;
+        default:
+          cout << "That is not a valid choice!\n";
+        }
+    }
+}
+
+char Menu3B()
+{
+  cout << endl << "a)List All Books" << endl;
+  cout << "Search By:" << endl;
+  cout << "    b)Title" << endl;
+  cout << "    c)Author" << endl;
+  cout << "    d)Category" << endl;
+  cout << "e)Return" << endl;
 
   char selection;
   cin >> selection;
@@ -117,7 +171,7 @@ void ReadUserFile()
 {
   ifstream in;
   int tempCounter = 0;
-  char tempFName[MAX_CHAR], tempLName[MAX_CHAR];
+  char tempFName[MAX_CHAR], tempLName[MAX_CHAR], tempName[MAX_CHAR];
   int tempNumChecked;
 
   //Count the number of lines in the input file
@@ -142,10 +196,15 @@ void ReadUserFile()
       in.ignore(MAX_CHAR, ';');
       in >> tempNumChecked;
       in.ignore(MAX_CHAR, '\n');
+      
+      strcpy(tempName, tempFName);
+      strcat(tempName, " ");
+      strcat(tempName, tempLName);
 
       User * aUser = new User;
       aUser->setFName(tempFName);
       aUser->setLName(tempLName);
+      aUser->setName(tempName);
       aUser->setNumChecked(tempNumChecked);
 
       llUser.AddLinkToBack(aUser);
@@ -159,8 +218,9 @@ void ReadBookFile()
 {
   ifstream in;
   int tempCounter = 0;
-  char tempAuthor[MAX_CHAR], tempTitle[MAX_CHAR];
-  int tempQuantity;
+  char tempAuthor[MAX_CHAR], tempTitle[MAX_CHAR], qint[MAX_CHAR], tempType[MAX_CHAR];
+  int tempQuantity, x;
+  string users[MAX_CHAR] = "Empty";
 
   //Count the number of lines in the input file                                                       
   in.open("books.txt");
@@ -169,6 +229,7 @@ void ReadBookFile()
       in.ignore(10000, '\n');
       in.peek();
       tempCounter++;
+      numbooks++;
     }
   in.close();
   in.clear(std::ios_base::goodbit);
@@ -177,18 +238,31 @@ void ReadBookFile()
   in.open("books.txt");
   for (int i = 0; i < tempCounter; i++)
     {
+      Book * aBook = new Book;
       in.get(tempTitle, MAX_CHAR, ';');
       in.ignore(MAX_CHAR, ';');
       in.get(tempAuthor, MAX_CHAR, ';');
       in.ignore(MAX_CHAR, ';');
-      in >> tempQuantity;
-      in.ignore(MAX_CHAR, '\n');
-      
-      Book * aBook = new Book;
+      in.get(qint, MAX_CHAR, ';');
+      in.ignore(MAX_CHAR, ';');
+      tempQuantity = atoi(qint);
+      in.get(tempType, MAX_CHAR, ';');
+      in.ignore(MAX_CHAR, ';');
+
+      aBook->setQuantity(tempQuantity);
       aBook->setTitle(tempTitle);
       aBook->setAuthor(tempAuthor);
-      aBook->setQuantity(tempQuantity);
+      aBook->setType(tempType);
 
+      for(x = 0; x < tempQuantity; x++)
+	{
+	  getline(in, users[x], ';');
+	}
+      in.ignore(MAX_CHAR, '\n');
+      for(x = 0; x < tempQuantity; x++)
+	{
+	  aBook->setUsers(users[x]);
+	}
       llBook.AddLinkToBack(aBook);
 
     }
@@ -281,9 +355,10 @@ void Register()
     }
 
   //stores name into obj and linked list
-  User* userObj;
+  User* userObj = new User;
   userObj->setFName(finput);
   userObj->setLName(linput);
+  userObj->setName(name);
   userObj->setNumChecked(0);
   llUser.AddLinkToBack(userObj);
   userObj->AppendToFile();
@@ -321,20 +396,21 @@ void UserBooks()
     {
       Book * aBook = (Book*)(llBook.GetFirstNode());
       strcpy(bookName, aBook->userBooks(fullname));
-      if(bookName != 0)
+      if (strcmp(bookName, "Empty") != 0)
 	{
-	  cout << bookName;
+	  cout << bookName << endl;
         }
       for (int i = 0; i < (counter - 1); i++)
 	 {
 	   aBook = (Book*)(llBook.GetNextNode());
 	   strcpy(bookName, aBook->userBooks(fullname));
-	   if (bookName != 0)
+	   if (strcmp(bookName, "Empty") != 0)
 	     {
-	       cout << bookName;
+	       cout << bookName << endl;
 	     }
 	 }
     }
+  //cout << "You do not have any books currently checked out" << endl;
 }
 
 void CheckOut()
@@ -350,7 +426,22 @@ void CheckOut()
   Book * aBook = (Book*)(llBook.GetFirstNode());
   if (strcmp(aBook->getTitle(), binput) == 0)
     {
-      aBook->checkOut(binput);
+      aBook->checkOut(fullname);
+
+      ofstream out;
+      out.open("books.txt");
+      out.close();
+
+      long counter = llBook.GetListLength();
+      Book * aBook = (Book*)(llBook.GetFirstNode());
+      aBook->AppendToFile();
+      for(int i = 0; i < (counter - 1); i++)
+	{
+	  aBook = (Book*)(llBook.GetNextNode());
+	  aBook->AppendToFile();
+	}
+
+      cout << "Successfully checked out the book!" << endl;
       return;
     }
   for (int i = 0; i < (counter - 1); i++)
@@ -358,15 +449,87 @@ void CheckOut()
       aBook = (Book*)(llBook.GetNextNode());
       if (strcmp(aBook->getTitle(), binput) == 0)
 	{
-	  aBook->checkOut(binput);
+	  aBook->checkOut(fullname);
+
+	  ofstream out;
+	  out.open("books.txt");
+	  out.close();
+
+	  long counterb = llBook.GetListLength();
+	  Book * aBook = (Book*)(llBook.GetFirstNode());
+	  aBook->AppendToFile();
+	  for(int j = 0; j < (counterb - 1); j++)
+	    {
+	      aBook = (Book*)(llBook.GetNextNode());
+	      aBook->AppendToFile();
+	    }
+
+	  cout << "Successfully checked out the book!" << endl;
 	  return;
 	}
     }
-
+  cout << "Did not find the book you were looking for" << endl;
 }
 
 void CheckIn()
 {
+	char binput[MAX_CHAR];
+	cin.ignore();
+	cout << "Enter the book you want to return: ";
+	cin.get(binput, MAX_CHAR, '\n');
+	cin.ignore(MAX_CHAR, '\n');
+	cout << endl;
+
+	long counter = llBook.GetListLength();
+	Book * aBook = (Book*)(llBook.GetFirstNode());
+	if (strcmp(aBook->getTitle(), binput) == 0)
+	{
+		aBook->checkIn(fullname);
+
+		ofstream out;
+		out.open("books.txt");
+		out.close();
+
+		long counterb = llBook.GetListLength();
+		Book * aBook = (Book*)(llBook.GetFirstNode());
+		aBook->AppendToFile();
+		for(int j = 0; j < (counterb - 1); j++)
+		  {
+		    aBook = (Book*)(llBook.GetNextNode());
+		    aBook->AppendToFile();
+		  }
+		cout << "Successfully returned book." << endl;
+		return;
+	}
+	for (int i = 0; i < (counter - 1); i++)
+	{
+		aBook = (Book*)(llBook.GetNextNode());
+		if (strcmp(aBook->getTitle(), binput) == 0)
+		{
+			aBook->checkIn(fullname);
+
+			ofstream out;
+			out.open("books.txt");
+			out.close();
+
+			long counterb = llBook.GetListLength();
+			Book * aBook = (Book*)(llBook.GetFirstNode());
+			aBook->AppendToFile();
+			for(int j = 0; j < (counterb - 1); j++)
+			  {
+			    aBook = (Book*)(llBook.GetNextNode());
+			    aBook->AppendToFile();
+			  }
+			cout << "Successfully returned book." << endl;
+			return;
+		}
+	}
+	cout << "Did not find the book you wanted to return." << endl;
+}
+
+void LogOut()
+{
+  main();
 }
 
 
@@ -386,7 +549,194 @@ void PrintUserList()
         }
     }
   else
-    cout << "No list loaded" << endl;
+  cout << "No list loaded" << endl;
 }
 
+void SearchTitle()
+{
+  char binput[MAX_CHAR];
+  cin.ignore();
+  cout << "Enter the title you want to search for: ";
+  cin.get(binput, MAX_CHAR, '\n');
+  cin.ignore(MAX_CHAR, '\n');
+  cout << endl;
 
+  long counter = llBook.GetListLength();
+  Book * aBook = (Book*)(llBook.GetFirstNode());
+  if (strcmp(aBook->getTitle(), binput) == 0)
+    {
+      cout << "Book found" << endl;
+      cout << "Would you like to check this book out?" << endl;
+      cout << "  a)yes" << endl;
+      cout << "  b)no" << endl;
+      char cinput[MAX_CHAR];
+      cin.get(cinput, MAX_CHAR, '\n');
+      cin.ignore(MAX_CHAR, '\n');
+      if(strcmp(cinput, "a") == 0)
+	{
+	  aBook->checkOut(fullname);
+
+	  ofstream out;
+	  out.open("books.txt");
+	  out.close();
+
+	  long counterb = llBook.GetListLength();
+	  Book * aBook = (Book*)(llBook.GetFirstNode());
+	  aBook->AppendToFile();
+	  for(int j = 0; j < (counterb - 1); j++)
+	    {
+	      aBook = (Book*)(llBook.GetNextNode());
+	      aBook->AppendToFile();
+	    }
+	  cout << "Successfully checked out book";
+            }
+      if(strcmp(cinput, "b") == 0)
+	{
+	  return;
+	}
+    }
+  for (int i = 0; i < (counter - 1); i++)
+    {
+      aBook = (Book*)(llBook.GetNextNode());
+      if (strcmp(aBook->getTitle(), binput) == 0)
+	{
+	  cout << "Book found" << endl;
+	  cout << "Would you like to check this book out?" << endl;
+	  cout << "  a)yes" << endl;
+	  cout << "  b)no" << endl;
+	  char cinput[MAX_CHAR];
+	  cin.get(cinput, MAX_CHAR, '\n');
+	  cin.ignore(MAX_CHAR, '\n');
+	  if(strcmp(cinput, "a") == 0)
+	    {
+	      aBook->checkOut(fullname);
+
+	      ofstream out;
+	      out.open("books.txt");
+	      out.close();
+
+	      long counterb = llBook.GetListLength();
+	      Book * aBook = (Book*)(llBook.GetFirstNode());
+	      aBook->AppendToFile();
+	      for(int j = 0; j < (counterb - 1); j++)
+		{
+		  aBook = (Book*)(llBook.GetNextNode());
+		  aBook->AppendToFile();
+		}
+	      cout << "Successfully checked out book";
+	    }
+	  if(strcmp(cinput, "b") == 0)
+	    {
+	      return;
+	    }
+	}
+    }
+  cout << "Did not find the book you wanted to checkout" << endl;
+}
+
+void SearchAuthor()
+{
+  char binput[MAX_CHAR];
+  cin.ignore();
+  cout << "Enter the Author you want to search for: ";
+  cin.get(binput, MAX_CHAR, '\n');
+  cin.ignore(MAX_CHAR, '\n');
+  cout << endl;
+  int e = 0;
+
+  long counter = llBook.GetListLength();
+  Book * aBook = (Book*)(llBook.GetFirstNode());
+  if (strcmp(aBook->getAuthor(), binput) == 0)
+    {
+      e++;
+      cout << aBook->getTitle() << endl;
+    }
+  for (int i = 0; i < (counter - 1); i++)
+    {
+      aBook = (Book*)(llBook.GetNextNode());
+      if (strcmp(aBook->getAuthor(), binput) == 0)
+        {
+	  e++;
+	  cout << aBook->getTitle() << endl;
+        }
+    }
+  if(e != 0)
+    {
+      cout << "Would you like to check one of these books out?" << endl;
+      cout << "  a)yes" << endl;
+      cout << "  b)no" << endl;
+      char cinput[MAX_CHAR];
+      cin.get(cinput, MAX_CHAR, '\n');
+      cin.ignore(MAX_CHAR, '\n');
+      if(strcmp(cinput, "a") == 0)
+	{
+	  CheckOut();
+	}
+      if(strcmp(cinput, "b") == 0)
+	{
+	  return;
+	}
+
+    }
+  else
+    {
+      cout << "Did not find the author you were looking for" << endl;
+    }
+}
+
+void SearchType()
+{
+  char binput[MAX_CHAR];
+  cin.ignore();
+  cout << "Available Categories:" << endl;
+  cout << "  Horror" << endl;
+  cout << "  Comedy" << endl;
+  cout << "  Romance" << endl;
+  cout << "  Science Fiction" << endl;
+  cout << "  Non Fiction" << endl;
+  cout << "  Fiction" << endl;
+
+  cout << "Enter the Category you want to search for: ";
+  cin.get(binput, MAX_CHAR, '\n');
+  cin.ignore(MAX_CHAR, '\n');
+  cout << endl;
+  int e = 0;
+
+  long counter = llBook.GetListLength();
+  Book * aBook = (Book*)(llBook.GetFirstNode());
+  if (strcmp(aBook->getType(), binput) == 0)
+    {
+      e++;
+      cout << aBook->getTitle() << endl;
+    }
+  for (int i = 0; i < (counter - 1); i++)
+    {
+      aBook = (Book*)(llBook.GetNextNode());
+      if (strcmp(aBook->getType(), binput) == 0)
+        {
+          e++;
+          cout << aBook->getTitle() << endl;
+        }
+    }
+  if(e != 0)
+    {
+      cout << "Would you like to check one of these books out?" << endl;
+      cout << "  a)yes" << endl;
+      cout << "  b)no" << endl;
+      string sinput;
+      cin >> sinput;
+      if(sinput == "a")
+        {
+          CheckOut();
+        }
+      if(sinput == "b")
+        {
+          Menu2A();
+	}
+
+    }
+  else
+    {
+      cout << "Did not find the category you were looking for" << endl;
+    }
+}
